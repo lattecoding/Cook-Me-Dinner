@@ -1,2 +1,2 @@
-# Cook-Me-Dinner
+# Cookify
 Recipe Assistant Application
