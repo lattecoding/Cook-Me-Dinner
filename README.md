@@ -1,2 +1,1 @@
 # Cookify
-Recipe Assistant Application
