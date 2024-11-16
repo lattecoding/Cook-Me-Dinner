@@ -1,5 +1,4 @@
 import { useState, useLayoutEffect } from "react";
-import { Link } from "react-router-dom";
 
 import ErrorPage from "./ErrorPage";
 import auth from "../utils/auth";
