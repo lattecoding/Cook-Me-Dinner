@@ -2,8 +2,9 @@ import { useState, useLayoutEffect } from "react";
 import ErrorPage from "./ErrorPage";
 import auth from "../utils/auth";
 
+
 const Board = () => {
-  const [recipes, setRecipes] = useState<any[]>([]); // Array to hold search results
+  const [recipes, setRecipes] = useState<object[]>([]); // Array to hold search results
   const [error, setError] = useState(false);
   const [loginCheck, setLoginCheck] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -50,31 +51,39 @@ const Board = () => {
           <h1>Let's Cook Something!</h1>
         </div>
       ) : (
-        <div className="recipe-finder">
-          <form onSubmit={handleSearch} className="search-bar">
-            <input
-              type="text"
-              placeholder="Search for a recipe..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button type="submit">Search</button>
-          </form>
-          <div className="recipe-results">
-            {recipes.slice(0, 6).map((recipe) => (
-              <div key={recipe.id} className="recipe-card">
-                <img src={recipe.image} alt={recipe.title} />
-                <h3>{recipe.title}</h3>
-                <a
-                  href={`https://spoonacular.com/recipes/${recipe.title.replace(/ /g, "-")}-${recipe.id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View Recipe
-                </a>
-              </div>
-            ))}
+        <div className="container-xl">
+          <div className="search-container">
+            <form onSubmit={handleSearch}>
+              <input
+                type="text"
+                placeholder="Search for a recipe..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}/>
+              <button type="submit">Search</button>
+            </form>
           </div>
+          {
+            recipes.length===0 ? (
+              <i className="bi bi-easel2-fill"></i>
+            ): (
+              <div className="recipe-results">
+            {recipes.slice(0, 6).map((recipe) => (
+                  <div key={recipe.id} className="recipe-card">
+                    <img src={recipe.image} alt={recipe.title} />
+                    <h3>{recipe.title}</h3>
+                    <a
+                      href={`https://spoonacular.com/recipes/${recipe.title.replace(/ /g, "-")}-${recipe.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View Recipe
+                    </a>
+                  </div>
+                ))}
+          </div>
+            )
+          }
+          
         </div>
       )}
     </>
