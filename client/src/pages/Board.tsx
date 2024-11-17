@@ -1,5 +1,4 @@
 import { useState, useLayoutEffect } from "react";
-
 import ErrorPage from "./ErrorPage";
 import auth from "../utils/auth";
 
@@ -17,11 +16,12 @@ const Board = () => {
 
   const fetchRecipes = async (query: string) => {
     try {
+      const apiKey = import.meta.env.VITE_SPOON_API;
       const response = await fetch(
-        `https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=YOUR_SPOONACULAR_API_KEY`,
+        `https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=${apiKey}`,
       );
       const data = await response.json();
-      setRecipes(data.results); // Assuming results are in `data.results`
+      setRecipes(data.results || []); // Handle case where `results` might be undefined
     } catch (err) {
       console.error("Failed to fetch recipes:", err);
       setError(true);
@@ -51,9 +51,6 @@ const Board = () => {
         </div>
       ) : (
         <div className="recipe-finder">
-          {/* <button type="button" id="logout-button">
-            <Link to="/logout">Logout</Link>
-          </button> */}
           <form onSubmit={handleSearch} className="search-bar">
             <input
               type="text"
@@ -64,15 +61,12 @@ const Board = () => {
             <button type="submit">Search</button>
           </form>
           <div className="recipe-results">
-            {recipes.map((recipe) => (
+            {recipes.slice(0, 6).map((recipe) => (
               <div key={recipe.id} className="recipe-card">
                 <img src={recipe.image} alt={recipe.title} />
                 <h3>{recipe.title}</h3>
                 <a
-                  href={`https://spoonacular.com/recipes/${recipe.title.replace(
-                    / /g,
-                    "-",
-                  )}-${recipe.id}`}
+                  href={`https://spoonacular.com/recipes/${recipe.title.replace(/ /g, "-")}-${recipe.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
