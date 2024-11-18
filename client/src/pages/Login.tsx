@@ -28,6 +28,7 @@ const Login = () => {
       Auth.login(data); // Ensure this passes the token properly
     } catch (err) {
       console.error("Failed to login", err);
+      alert("Incorrect Username or Password, Please Try Again"); // Alert for failed login
     }
   };
 

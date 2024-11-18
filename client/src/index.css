@@ -129,6 +129,10 @@ tbody tr:nth-child(odd) {
     justify-content: center;
 }
 
+.image-landing {
+    width: 60px;
+    height: 60px;
+}
 .active {
     font-weight: 700;
 }
