@@ -77,12 +77,12 @@ tbody tr:nth-child(odd) {
 
 /* Navbar Content */
 /* .navbar-nav .nav-link {
-    transition: none; 
+    transition: none;
 }
 
 .navbar-nav .nav-link:hover {
-    background-color: transparent; 
-    color: inherit; 
+    background-color: transparent;
+    color: inherit;
 }
 
 .nav {
@@ -259,6 +259,9 @@ tbody tr:nth-child(odd) {
     grid-template-columns: 250px 250px 250px;
     gap: 1.5rem; /* Space between cards */
     padding: 1rem; /* Padding around the grid */
+    justify-content: center;
+    align-content: center;
+    margin: 0 auto;
 }
 
 .recipe-card {
@@ -306,11 +309,17 @@ tbody tr:nth-child(odd) {
     }
 }
 
-
 /* Vanna stuff */
-.btn-login { margin-left: 1rem; }
-.btn-login a:hover, .btn-login:hover a { color: #fff; }
-.btn-login a { color: #198754; }
+.btn-login {
+    margin-left: 1rem;
+}
+.btn-login a:hover,
+.btn-login:hover a {
+    color: #fff;
+}
+.btn-login a {
+    color: #198754;
+}
 
 #navbarNav {
     justify-content: center;
@@ -324,4 +333,27 @@ tbody tr:nth-child(odd) {
 
 .login-notice h1 {
     margin: 1rem;
+}
+@media (max-width: 1200px) {
+    .recipe-results {
+        grid-template-columns: repeat(
+            auto-fill,
+            minmax(200px, 1fr)
+        ); /* Adjust column width on medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .recipe-results {
+        grid-template-columns: repeat(
+            auto-fill,
+            minmax(150px, 1fr)
+        ); /* Adjust column width on small screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .recipe-results {
+        grid-template-columns: 1fr; /* Stack the cards vertically on extra small screens */
+    }
 }
