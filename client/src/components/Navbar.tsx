@@ -84,30 +84,34 @@ const Navbar = () => {
       </ul>
 
       {/* Login/Logout Section */}
-      <div className="d-flex">
-        {!loginCheck ? (
-          <button className="btn btn-outline-primary me-2">
-            <Link to="/login" className="text-decoration-none text-white">
-              Login
-            </Link>
-          </button>
-        ) : (
-          <div className="d-flex align-items-center">
-            <button className="btn btn-outline-success me-2" type="submit">
-              Spotify
-            </button>
-            <button
-              className="btn btn-outline-danger"
-              type="button"
-              onClick={() => {
-                auth.logout();
-              }}
-            >
-              Logout
-            </button>
-          </div>
-        )}
-      </div>
+      <div className="d-flex align-items-center">
+  {loginCheck ? (
+    <>
+      {/* Display user's name from the token */}
+      <span className="me-3">
+        Hey, {auth.getProfile()?.username || "User"}!
+      </span>
+      <button className="btn btn-outline-success me-2" type="submit">
+        Spotify
+      </button>
+      <button
+        className="btn btn-outline-danger"
+        type="button"
+        onClick={() => {
+          auth.logout();
+        }}
+      >
+        Logout
+      </button>
+    </>
+  ) : (
+    <button className="btn btn-outline-primary">
+      <Link to="/login" className="text-decoration-none text-white">
+        Login
+      </Link>
+    </button>
+  )}
+</div>
     </div>
   </div>
 </nav>
