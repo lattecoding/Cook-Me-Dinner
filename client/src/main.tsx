@@ -6,6 +6,7 @@ import App from "./App.tsx";
 import Board from "./pages/Board.tsx";
 import ErrorPage from "./pages/ErrorPage.tsx";
 import Login from "./pages/Login.tsx";
+import Navbar from './components/Navbar';
 
 const router = createBrowserRouter([
   {
@@ -15,11 +16,19 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Board />,
+        element: 
+          <div>
+            <Navbar />
+            <Board />
+          </div>,
       },
       {
         path: "/login",
-        element: <Login />,
+        element: 
+          <div>
+            <Navbar />
+            <Login />
+          </div>,
       },
     ],
   },

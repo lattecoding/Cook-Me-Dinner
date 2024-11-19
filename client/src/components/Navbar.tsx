@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import auth from "../utils/auth";
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import auth from '../utils/auth';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
 
 const Navbar = () => {
   const [loginCheck, setLoginCheck] = useState(false);
@@ -16,76 +15,33 @@ const Navbar = () => {
   useEffect(() => {
     console.log(loginCheck);
     checkLogin();
-  }, [loginCheck]);
+  }, []);
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary w-100">
-  <div className="container-fluid">
-    {/* Brand Name */}
-    <a className="navbar-brand" href="#">
-      Cookify
-    </a>
-
-    {/* Toggle Button for Small Screens */}
-    <button
-      className="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span className="navbar-toggler-icon"></span>
-    </button>
-
-    {/* Collapsible Menu */}
-    <div className="collapse navbar-collapse" id="navbarNav">
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-        <li className="nav-item">
-          <a className="nav-link active" aria-current="page" href="#">
-            Home
-          </a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link active" href="#">
-            Profiles
-          </a>
-        </li>
-        <li className="nav-item dropdown">
-          <a
-            className="nav-link active dropdown-toggle"
-            href="#"
-            id="navbarDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Options
-          </a>
-          <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li>
-              <a className="dropdown-item" href="#">
-                Settings
-              </a>
-            </li>
-            <li>
-              <a className="dropdown-item" href="#">
-                Favorites
-              </a>
-            </li>
-            <li>
-              <a className="dropdown-item" href="#">
-                Recent Searches
-              </a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-
-      {/* Login/Logout Section */}
+      <div className="container-lg">
+        <a className="navbar-brand" href="#">Cookify</a>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div className="navbar-nav">
+            <a className="nav-item nav-link active" href="#">Home</a>
+            <a className="nav-item nav-link" href="#">Profiles</a>
+            <div className="dropdown">
+              <button className="nav-item nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Options
+              </button>
+              <ul className="dropdown-menu">
+                <li><a className="dropdown-item" href="#">Recent Searches</a></li>
+                <li><a className="dropdown-item" href="#">Favorites</a></li>
+                <li><a className="dropdown-item" href="#">Switch User</a></li>
+              </ul>
+            </div>
+      </div>
       <div className="d-flex align-items-center">
-  {loginCheck ? (
+          {
+            loginCheck ? (
     <>
       {/* Display user's name from the token */}
       <span className="me-3">
@@ -104,18 +60,18 @@ const Navbar = () => {
         Logout
       </button>
     </>
-  ) : (
-    <button className="btn btn-secondary">
-      <Link to="/login" className="text-decoration-none text-white">
-        Login
-      </Link>
-    </button>
-  )}
-</div>
-    </div>
-  </div>
-</nav>
-
+              ) : (
+                <button className="btn btn-secondary">
+                  <Link to="/login" className="text-decoration-none text-white">
+                    Login
+                  </Link> 
+              </button>
+            )
+          }
+        </div>
+        </div>
+      </div>
+    </nav>
   );
 };
 
