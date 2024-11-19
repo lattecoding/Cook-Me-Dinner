@@ -25,7 +25,8 @@
     "wait-on": "^7.2.0"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
-    "@popperjs/core": "^2.11.8"
+    "bootstrap-icons": "^1.11.3"
   }
 }
