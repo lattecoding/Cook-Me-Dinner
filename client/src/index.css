@@ -62,7 +62,7 @@ main {
     color: black;
     width: 100%;
     min-height: 100vh;
-    display: flex;
+    display: flex-direction row;;
 }
 
 tr {
@@ -257,8 +257,13 @@ tbody tr:nth-child(odd) {
     display: grid;
     grid-template-columns: 250px 250px 250px;
     gap: 1.5rem; /* Space between cards */
-    padding: 1rem; /* Padding around the grid */
+    padding: 1rem;
+    justify-content: center;
+    align-content: center;
+    margin: 0 auto; /* Padding around the grid */
 }
+
+
 
 .recipe-card {
     background: #fff; /* Background color for cards */
@@ -302,5 +307,23 @@ tbody tr:nth-child(odd) {
     }
     button {
         background-color: #f9f9f9;
+    }
+}
+
+@media (max-width: 1200px) {
+    .recipe-results {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust column width on medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .recipe-results {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust column width on small screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .recipe-results {
+        grid-template-columns: 1fr; /* Stack the cards vertically on extra small screens */
     }
 }

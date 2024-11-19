@@ -95,7 +95,7 @@ const Navbar = () => {
         Spotify
       </button>
       <button
-        className="btn btn-outline-danger"
+        className="btn btn-outline-secondary"
         type="button"
         onClick={() => {
           auth.logout();
@@ -105,7 +105,7 @@ const Navbar = () => {
       </button>
     </>
   ) : (
-    <button className="btn btn-outline-primary">
+    <button className="btn btn-secondary">
       <Link to="/login" className="text-decoration-none text-white">
         Login
       </Link>

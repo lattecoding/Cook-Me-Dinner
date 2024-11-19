@@ -53,7 +53,9 @@ const Board = () => {
     <>
       {!loginCheck ? (
         <div className="login-notice">
-         
+         <div className="page-title border rounded-3">
+         <h1>Let's Get Cooking</h1>
+         </div>
           <img
             src="/landingpage.jpeg"
             className="img-fluid border rounded-3 shadow-lg mb-4"
