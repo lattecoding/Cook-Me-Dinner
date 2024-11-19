@@ -93,11 +93,11 @@ const Navbar = () => {
           </button>
         ) : (
           <div className="d-flex align-items-center">
-            <button className="btn btn-outline-success me-2" type="submit">
+            <button className="btn btn-outline-secondary me-2" type="submit">
               Spotify
             </button>
             <button
-              className="btn btn-outline-danger"
+              className="btn btn-outline"
               type="button"
               onClick={() => {
                 auth.logout();
