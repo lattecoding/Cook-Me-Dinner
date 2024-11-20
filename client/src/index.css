@@ -75,49 +75,6 @@ tbody tr:nth-child(odd) {
     background-color: #333;
 }
 
-/* Navbar Content */
-/* .navbar-nav .nav-link {
-    transition: none;
-}
-
-.navbar-nav .nav-link:hover {
-    background-color: transparent;
-    color: inherit;
-}
-
-.nav {
-    display: flex;
-    padding: 1em 2em;
-}
-
-.nav ul {
-    display: flex;
-    margin-inline: auto;
-}
-
-.nav-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: larger;
-    font-weight: 900;
-}
-
-.nav-title a {
-    color: #b864c4;
-}
-
-.nav-item {
-    display: block;
-    margin-left: auto;
-    list-style: none;
-}
-
-.nav-link {
-    color: #fff;
-    text-decoration: none;
-} */
-
 .search-container {
     width: 100%;
     margin: 40px;
@@ -131,117 +88,51 @@ tbody tr:nth-child(odd) {
     height: 60px;
 }
 
-.active {
-    font-weight: 700;
-}
-
-.table {
-    width: 80vw;
-    table-layout: fixed;
-}
-
-.board {
-    width: 100%;
-}
-
-.board-display {
-    display: flex;
-}
-
-.swim-lane {
-    text-align: center;
-    font-weight: 500;
-    width: 33%;
-    height: 90vh;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    margin: 5px;
-    padding: 5px;
-}
-
-.todo {
-    background-color: #e9cbec;
-}
-
-.inprogress {
-    background-color: #b864c4;
-}
-
-.done {
-    background-color: #732381;
-}
-
-.ticket-card {
-    text-align: left;
-    background-color: #fff;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border: 0.1em solid black;
-}
-
 .container {
-    margin-right:50%; 
-    margin-left:9%;
-    margin-top:0%;
-    width: 40%;
-    height:80%;
-    
-    
-   
-
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
 }
 .ktool {
-    background-image:url("../kitchen-tools.jpg");
+    background-image: url("../kitchen-tools.jpg");
     background-repeat: repeat-x;
-    background-size:cover;
-    
-   
-   
-}
-
-#create-ticket-link {
-    display: block;
-    margin-left: auto;
+    background-size: cover;
 }
 
 .form {
     width: 40%;
-    height: 90%;
+    max-width: 400px; /* Limit the maximum width for smaller screens */
     background-color: #ffffff;
-    
-  
-    margin:0%;
+    padding: 2rem; /* Add some padding for spacing */
+    border-radius: 10px; /* Optional: Round the corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
     display: flex;
     flex-direction: column;
-    justify-content:flex-start;
-    align-items:center;
+    justify-content: center;
+    align-items: center;
 }
 
 .form > h1,
 .form > label {
     color: Black;
-    
 }
 
 .form > input {
     width: 200px;
-    margin-bottom:6%;
+    margin-bottom: 6%;
     margin-top: 1%;
 }
 
 .form > label {
     margin-top: 7%;
     margin-bottom: 3%;
-    margin-left:16%;
-    align-self:flex-start;
-    
-    
+    margin-left: 16%;
+    align-self: flex-start;
 }
 
 .form button {
     margin-top: 6%;
-    margin-bottom:35%
+    margin-bottom: 35%;
 }
 
 .form textarea {
@@ -249,9 +140,6 @@ tbody tr:nth-child(odd) {
     min-height: 30px;
     min-width: 30px;
 }
-
-
-
 
 .editBtn {
     background-color: #f9f9f9;
@@ -382,5 +270,15 @@ tbody tr:nth-child(odd) {
 @media (max-width: 480px) {
     .recipe-results {
         grid-template-columns: 1fr; /* Stack the cards vertically on extra small screens */
+    }
+    .form {
+        width: 90%; /* Fill most of the screen width */
+        padding: 1rem; /* Adjust padding for space efficiency */
+    }
+
+    .form input,
+    .form button {
+        width: 100%; /* Full width inputs and buttons */
+        font-size: 1rem; /* Maintain readability */
     }
 }
