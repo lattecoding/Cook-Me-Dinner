@@ -62,7 +62,7 @@ main {
     color: black;
     width: 100%;
     min-height: 100vh;
-    display: flex-direction row;;
+    /* display: flex; */
 }
 
 tr {
@@ -76,13 +76,13 @@ tbody tr:nth-child(odd) {
 }
 
 /* Navbar Content */
-.navbar-nav .nav-link {
-    transition: none; /* Disable transition effects */
+/* .navbar-nav .nav-link {
+    transition: none;
 }
 
 .navbar-nav .nav-link:hover {
-    background-color: transparent; /* Remove background color on hover */
-    color: inherit; /* Keep the text color the same */
+    background-color: transparent;
+    color: inherit;
 }
 
 .nav {
@@ -116,7 +116,7 @@ tbody tr:nth-child(odd) {
 .nav-link {
     color: #fff;
     text-decoration: none;
-}
+} */
 
 .search-container {
     width: 100%;
@@ -248,6 +248,7 @@ tbody tr:nth-child(odd) {
 
 .login-notice {
     display: flex;
+    flex-direction: column;
     width: 100%;
     align-items: center;
     justify-content: center;
@@ -257,13 +258,11 @@ tbody tr:nth-child(odd) {
     display: grid;
     grid-template-columns: 250px 250px 250px;
     gap: 1.5rem; /* Space between cards */
-    padding: 1rem;
+    padding: 1rem; /* Padding around the grid */
     justify-content: center;
     align-content: center;
-    margin: 0 auto; /* Padding around the grid */
+    margin: 0 auto;
 }
-
-
 
 .recipe-card {
     background: #fff; /* Background color for cards */
@@ -310,15 +309,46 @@ tbody tr:nth-child(odd) {
     }
 }
 
+/* Vanna stuff */
+.btn-login {
+    margin-left: 1rem;
+}
+.btn-login a:hover,
+.btn-login:hover a {
+    color: #fff;
+}
+.btn-login a {
+    color: #198754;
+}
+
+#navbarNav {
+    justify-content: center;
+}
+.nav-link {
+    color: #000;
+}
+.navbar-collapse {
+    justify-content: right !important;
+}
+
+.login-notice h1 {
+    margin: 1rem;
+}
 @media (max-width: 1200px) {
     .recipe-results {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust column width on medium screens */
+        grid-template-columns: repeat(
+            auto-fill,
+            minmax(200px, 1fr)
+        ); /* Adjust column width on medium screens */
     }
 }
 
 @media (max-width: 768px) {
     .recipe-results {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust column width on small screens */
+        grid-template-columns: repeat(
+            auto-fill,
+            minmax(150px, 1fr)
+        ); /* Adjust column width on small screens */
     }
 }
 
