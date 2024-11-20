@@ -182,11 +182,22 @@ tbody tr:nth-child(odd) {
 
 .container {
     margin-right:50%; 
-    margin-left:8%;
-    margin-top:6%;
+    margin-left:9%;
+    margin-top:0%;
     width: 40%;
     height:80%;
+    
+    
+   
 
+}
+.ktool {
+    background-image:url("../kitchen-tools.jpg");
+    background-repeat: repeat-x;
+    background-size:cover;
+    
+   
+   
 }
 
 #create-ticket-link {
@@ -198,6 +209,7 @@ tbody tr:nth-child(odd) {
     width: 40%;
     height: 90%;
     background-color: #ffffff;
+    
   
     margin:0%;
     display: flex;
@@ -237,6 +249,9 @@ tbody tr:nth-child(odd) {
     min-height: 30px;
     min-width: 30px;
 }
+
+
+
 
 .editBtn {
     background-color: #f9f9f9;
