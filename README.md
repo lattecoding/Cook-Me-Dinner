@@ -1,3 +1,5 @@
+# Cookify
+
 ## Table of Contents
 - [License](#license)
 - [Description](#description)
@@ -13,25 +15,43 @@
 ![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 ## Description
-This website authenticates Kanban users, checking secure tokens against verified users. If authenticated, the user will be allowed access to the project task board and can add, edit or delete projects as appropriate.
+Cookify is a web application that helps users find recipes to make using a Spoonaculator API. We also implemented a YouTube API to easily search videos. The idea is you find a recipe to make, if you get stuck and need a video guide, you can quickly search how to complete a step.
 
 ## Installation
-React, Node, Vite
+React, Node, Vite, Express, SQL
 
 ## Usage
-For fun
+Learn to cook something new!
 
 ## Contributions
-
+Talon - https://github.com/toasterbrain28
+Netra - https://github.com/naiknetra
+Jessica - https://github.com/Jessica-Lee1424
+Luis - https://github.com/lattecoding
 
 ## Testing
-Tested with Insomnia.  In the default Insomnia code included in the homework instructions, apparently the key is old so in order to get the app working, you have to generate a new one once logged in and delete the given Bearer Token with the new one you generated.
+Once downloaded to local machine, open a terminal in the folder and run the following commands to build the application:
+```
+npm install
+npm run build
+cd server
+cd db
+psql -U postgres
+```
+Log in in postgres server
+
+```
+\i schema.sql
+\q
+
+cd ..
+cd ..
+
+npm run seed
+npm run start:dev
+```
 
 ## GitHub
 [GitHub](https://github.com/lattecoding/Cookify)
 
-## Email Authors
-[Email Author](group3@gmail.com)
-
-## Video Demo 
-[![My Image](https://drive.google.com/uc?id=1g0YLHB0qaixWZMZgqQg8gIO4F_uuyttR)](https://drive.google.com/file/d/1g0YLHB0qaixWZMZgqQg8gIO4F_uuyttR/view)
+## Video Demo
