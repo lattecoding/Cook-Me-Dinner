@@ -1,25 +1,56 @@
 import { useState, useLayoutEffect } from "react";
 import ErrorPage from "./ErrorPage";
 import auth from "../utils/auth";
+import axios from "axios";
+import VideoList from "../components/VideoList";
+import VideoPlayer from "../components/VideoPlayer";
 
-// Define an interface for the recipe
 interface Recipe {
   id: number;
   title: string;
   image: string;
 }
 
+interface Video {
+  id: string; // YouTube video ID
+  title: string; // Video title
+  thumbnail: string; // URL of the thumbnail image
+}
+
+interface YouTubeAPIItem {
+  id: {
+    videoId: string;
+  };
+  snippet: {
+    title: string;
+    thumbnails: {
+      high: {
+        url: string;
+      };
+    };
+  };
+}
+
 const Board = () => {
-  const [recipes, setRecipes] = useState<Recipe[]>([]); // Use the Recipe type
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [error, setError] = useState(false);
   const [loginCheck, setLoginCheck] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
+  const [searchType, setSearchType] = useState<"youtube" | "recipes">(
+    "recipes",
+  );
 
   const checkLogin = () => {
     if (auth.loggedIn()) {
       setLoginCheck(true);
     }
   };
+
+  useLayoutEffect(() => {
+    checkLogin();
+  }, []);
 
   const fetchRecipes = async (query: string) => {
     try {
@@ -28,34 +59,83 @@ const Board = () => {
         `https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=${apiKey}`,
       );
       const data = await response.json();
-      setRecipes(data.results || []); // Handle case where `results` might be undefined
+      setRecipes(data.results || []);
     } catch (err) {
       console.error("Failed to fetch recipes:", err);
       setError(true);
     }
   };
 
-  useLayoutEffect(() => {
-    checkLogin();
-  }, []);
+  const handleSearchVideos = async (query: string) => {
+    const API_KEY = "AIzaSyCspIUuocKpc10150WmsBMm9bLihaxVNYI"; // Replace with your actual API key
+    try {
+      const response = await axios.get(
+        `https://www.googleapis.com/youtube/v3/search`,
+        {
+          params: {
+            part: "snippet",
+            q: query,
+            type: "video",
+            key: API_KEY,
+            maxResults: 10,
+          },
+        },
+      );
+
+      const videoData: Video[] = response.data.items.map(
+        (item: YouTubeAPIItem) => ({
+          id: item.id.videoId || "",
+          title: item.snippet.title || "",
+          thumbnail: item.snippet.thumbnails.high.url || "",
+        }),
+      );
+
+      setVideos(videoData);
+    } catch (error) {
+      console.error("Error fetching videos:", error);
+    }
+  };
+
+  const handleSelectVideo = (videoId: string) => {
+    setSelectedVideoId(videoId);
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      fetchRecipes(searchQuery);
+      if (searchType === "recipes") {
+        setVideos([]); // Clear videos when switching to recipe search
+        setSelectedVideoId(null); // Clear selected video
+        fetchRecipes(searchQuery);
+      } else if (searchType === "youtube") {
+        setRecipes([]); // Clear recipes when switching to video search
+        handleSearchVideos(searchQuery);
+      }
+    }
+  };
+
+  const handleSearchTypeChange = (newSearchType: "youtube" | "recipes") => {
+    setSearchType(newSearchType);
+    setSearchQuery(""); // Clear the search query when switching search types
+    if (newSearchType === "recipes") {
+      setVideos([]); // Clear YouTube videos when switching to recipes
+      setSelectedVideoId(null); // Clear selected video
+    } else {
+      setRecipes([]); // Clear recipes when switching to YouTube
     }
   };
 
   if (error) {
     return <ErrorPage />;
   }
+
   return (
     <>
       {!loginCheck ? (
         <div className="login-notice">
-         <div className="page-title border rounded-3">
-         <h1>Let's Get Cooking</h1>
-         </div>
+          <div className="page-title border rounded-3">
+            <h1>Let's Get Cooking</h1>
+          </div>
           <img
             src="/landingpage.jpeg"
             className="img-fluid border rounded-3 shadow-lg mb-4"
@@ -63,7 +143,7 @@ const Board = () => {
             width="700"
             height="500"
             loading="lazy"
-          ></img>
+          />
         </div>
       ) : (
         <div className="container-xl">
@@ -71,22 +151,32 @@ const Board = () => {
             <form onSubmit={handleSearch}>
               <input
                 type="text"
-                placeholder="Search for a recipe..."
+                placeholder={`Search for a ${searchType === "youtube" ? "video" : "recipe"}...`}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <button type="submit">Search</button>
+              <div className="search-buttons">
+                <button
+                  type="button"
+                  onClick={() => handleSearchTypeChange("recipes")}
+                  className={searchType === "recipes" ? "active" : ""}
+                >
+                  Search Recipes
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSearchTypeChange("youtube")}
+                  className={searchType === "youtube" ? "active" : ""}
+                >
+                  Search Videos
+                </button>
+                <button type="submit">Search</button>
+              </div>
             </form>
           </div>
-          {recipes.length === 0 ? (
-          //  <i className="bi bi-cup-hot-fill"></i>
-          
-           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className=" bi bi-cup-hot-fill" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M.5 6a.5.5 0 0 0-.488.608l1.652 7.434A2.5 2.5 0 0 0 4.104 16h5.792a2.5 2.5 0 0 0 2.44-1.958l.131-.59a3 3 0 0 0 1.3-5.854l.221-.99A.5.5 0 0 0 13.5 6zM13 12.5a2 2 0 0 1-.316-.025l.867-3.898A2.001 2.001 0 0 1 13 12.5"/>
-  <path d="m4.4.8-.003.004-.014.019a4 4 0 0 0-.204.31 2 2 0 0 0-.141.267c-.026.06-.034.092-.037.103v.004a.6.6 0 0 0 .091.248c.075.133.178.272.308.445l.01.012c.118.158.26.347.37.543.112.2.22.455.22.745 0 .188-.065.368-.119.494a3 3 0 0 1-.202.388 5 5 0 0 1-.253.382l-.018.025-.005.008-.002.002A.5.5 0 0 1 3.6 4.2l.003-.004.014-.019a4 4 0 0 0 .204-.31 2 2 0 0 0 .141-.267c.026-.06.034-.092.037-.103a.6.6 0 0 0-.09-.252A4 4 0 0 0 3.6 2.8l-.01-.012a5 5 0 0 1-.37-.543A1.53 1.53 0 0 1 3 1.5c0-.188.065-.368.119-.494.059-.138.134-.274.202-.388a6 6 0 0 1 .253-.382l.025-.035A.5.5 0 0 1 4.4.8m3 0-.003.004-.014.019a4 4 0 0 0-.204.31 2 2 0 0 0-.141.267c-.026.06-.034.092-.037.103v.004a.6.6 0 0 0 .091.248c.075.133.178.272.308.445l.01.012c.118.158.26.347.37.543.112.2.22.455.22.745 0 .188-.065.368-.119.494a3 3 0 0 1-.202.388 5 5 0 0 1-.253.382l-.018.025-.005.008-.002.002A.5.5 0 0 1 6.6 4.2l.003-.004.014-.019a4 4 0 0 0 .204-.31 2 2 0 0 0 .141-.267c.026-.06.034-.092.037-.103a.6.6 0 0 0-.09-.252A4 4 0 0 0 6.6 2.8l-.01-.012a5 5 0 0 1-.37-.543A1.53 1.53 0 0 1 6 1.5c0-.188.065-.368.119-.494.059-.138.134-.274.202-.388a6 6 0 0 1 .253-.382l.025-.035A.5.5 0 0 1 7.4.8m3 0-.003.004-.014.019a4 4 0 0 0-.204.31 2 2 0 0 0-.141.267c-.026.06-.034.092-.037.103v.004a.6.6 0 0 0 .091.248c.075.133.178.272.308.445l.01.012c.118.158.26.347.37.543.112.2.22.455.22.745 0 .188-.065.368-.119.494a3 3 0 0 1-.202.388 5 5 0 0 1-.252.382l-.019.025-.005.008-.002.002A.5.5 0 0 1 9.6 4.2l.003-.004.014-.019a4 4 0 0 0 .204-.31 2 2 0 0 0 .141-.267c.026-.06.034-.092.037-.103a.6.6 0 0 0-.09-.252A4 4 0 0 0 9.6 2.8l-.01-.012a5 5 0 0 1-.37-.543A1.53 1.53 0 0 1 9 1.5c0-.188.065-.368.119-.494.059-.138.134-.274.202-.388a6 6 0 0 1 .253-.382l.025-.035A.5.5 0 0 1 10.4.8"/>
 
-</svg>
-          ) : (
+          {/* Show Recipes */}
+          {searchType === "recipes" && recipes.length > 0 && (
             <div className="recipe-results">
               {recipes.slice(0, 6).map((recipe) => (
                 <div key={recipe.id} className="recipe-card">
@@ -102,6 +192,13 @@ const Board = () => {
                 </div>
               ))}
             </div>
+          )}
+
+          {/* Show YouTube Videos */}
+          {searchType === "youtube" && selectedVideoId ? (
+            <VideoPlayer videoId={selectedVideoId} />
+          ) : (
+            <VideoList videos={videos} onSelect={handleSelectVideo} />
           )}
         </div>
       )}
