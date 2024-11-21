@@ -1,6 +1,8 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import Auth from "../utils/auth";
 import { login } from "../api/authAPI";
+//import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
@@ -32,7 +34,11 @@ const Login = () => {
   };
 
   return (
+    <main className="ktool">
+      
     <div className="container">
+      
+          
       <form className="form" onSubmit={handleSubmit}>
         <h1>Login</h1>
         <label>Username</label>
@@ -51,7 +57,10 @@ const Login = () => {
         />
         <button type="submit">Submit Form</button>
       </form>
+      
+      
     </div>
+    </main>
   );
 };
 
