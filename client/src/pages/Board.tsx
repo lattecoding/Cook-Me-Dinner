@@ -1,25 +1,30 @@
 import { useState, useLayoutEffect } from "react";
 import ErrorPage from "./ErrorPage";
 import auth from "../utils/auth";
-
-// Define an interface for the recipe
-interface Recipe {
-  id: number;
-  title: string;
-  image: string;
-}
+import { Recipe } from "../interfaces/Recipe";
+import { Video } from "../interfaces/Video";
+import { YouTubeAPIItem } from "../interfaces/YouTubeAPIItem";
+import axios from "axios";
 
 const Board = () => {
-  const [recipes, setRecipes] = useState<Recipe[]>([]); // Use the Recipe type
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [error, setError] = useState(false);
   const [loginCheck, setLoginCheck] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [searchType, setSearchType] = useState<"youtube" | "recipes" | null>(
+    null,
+  );
 
   const checkLogin = () => {
     if (auth.loggedIn()) {
       setLoginCheck(true);
     }
   };
+
+  useLayoutEffect(() => {
+    checkLogin();
+  }, []);
 
   const fetchRecipes = async (query: string) => {
     try {
@@ -28,34 +33,68 @@ const Board = () => {
         `https://api.spoonacular.com/recipes/complexSearch?query=${query}&apiKey=${apiKey}`,
       );
       const data = await response.json();
-      setRecipes(data.results || []); // Handle case where `results` might be undefined
+      setRecipes(data.results || []);
     } catch (err) {
       console.error("Failed to fetch recipes:", err);
       setError(true);
     }
   };
 
-  useLayoutEffect(() => {
-    checkLogin();
-  }, []);
+  const handleSearchVideos = async (query: string) => {
+    const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY; // Get API key from the environment file
+    try {
+      const response = await axios.get(
+        `https://www.googleapis.com/youtube/v3/search`,
+        {
+          params: {
+            part: "snippet",
+            q: query,
+            type: "video",
+            key: API_KEY, // Use the API key here
+            maxResults: 6,
+          },
+        },
+      );
 
-  const handleSearch = (e: React.FormEvent) => {
+      const videoData: Video[] = response.data.items.map(
+        (item: YouTubeAPIItem) => ({
+          id: item.id.videoId || "",
+          title: item.snippet.title || "",
+          thumbnail: item.snippet.thumbnails.high.url || "",
+        }),
+      );
+
+      setVideos(videoData);
+    } catch (error) {
+      console.error("Error fetching videos:", error);
+    }
+  };
+
+  const handleSearch = (e: React.FormEvent, type: "youtube" | "recipes") => {
     e.preventDefault();
+    setSearchType(type); // Set the search type based on which button was clicked
     if (searchQuery.trim()) {
-      fetchRecipes(searchQuery);
+      if (type === "recipes") {
+        setVideos([]); // Clear videos when switching to recipe search
+        fetchRecipes(searchQuery);
+      } else if (type === "youtube") {
+        setRecipes([]); // Clear recipes when switching to video search
+        handleSearchVideos(searchQuery);
+      }
     }
   };
 
   if (error) {
     return <ErrorPage />;
   }
+
   return (
     <>
       {!loginCheck ? (
         <div className="login-notice">
-         <div className="page-title border rounded-3">
-         <h1>Let's Get Cooking</h1>
-         </div>
+          <div className="page-title border rounded-3">
+            <h1>Let's Get Cooking</h1>
+          </div>
           <img
             src="/landingpage.jpeg"
             className="img-fluid border rounded-3 shadow-lg mb-4"
@@ -63,30 +102,37 @@ const Board = () => {
             width="700"
             height="500"
             loading="lazy"
-          ></img>
+          />
         </div>
       ) : (
         <div className="container-xl">
           <div className="search-container">
-            <form onSubmit={handleSearch}>
-              <input
+            <form>
+              <input className="search-form"
                 type="text"
-                placeholder="Search for a recipe..."
+                placeholder="Search for a recipe or video..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              <button type="submit">Search</button>
+              <div className="search-buttons">
+                <button
+                  type="button"
+                  onClick={(e) => handleSearch(e, "recipes")}
+                >
+                  Search Recipes
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => handleSearch(e, "youtube")}
+                >
+                  Search Videos
+                </button>
+              </div>
             </form>
           </div>
-          {recipes.length === 0 ? (
-          //  <i className="bi bi-cup-hot-fill"></i>
-          
-           <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className=" bi bi-cup-hot-fill" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M.5 6a.5.5 0 0 0-.488.608l1.652 7.434A2.5 2.5 0 0 0 4.104 16h5.792a2.5 2.5 0 0 0 2.44-1.958l.131-.59a3 3 0 0 0 1.3-5.854l.221-.99A.5.5 0 0 0 13.5 6zM13 12.5a2 2 0 0 1-.316-.025l.867-3.898A2.001 2.001 0 0 1 13 12.5"/>
-  <path d="m4.4.8-.003.004-.014.019a4 4 0 0 0-.204.31 2 2 0 0 0-.141.267c-.026.06-.034.092-.037.103v.004a.6.6 0 0 0 .091.248c.075.133.178.272.308.445l.01.012c.118.158.26.347.37.543.112.2.22.455.22.745 0 .188-.065.368-.119.494a3 3 0 0 1-.202.388 5 5 0 0 1-.253.382l-.018.025-.005.008-.002.002A.5.5 0 0 1 3.6 4.2l.003-.004.014-.019a4 4 0 0 0 .204-.31 2 2 0 0 0 .141-.267c.026-.06.034-.092.037-.103a.6.6 0 0 0-.09-.252A4 4 0 0 0 3.6 2.8l-.01-.012a5 5 0 0 1-.37-.543A1.53 1.53 0 0 1 3 1.5c0-.188.065-.368.119-.494.059-.138.134-.274.202-.388a6 6 0 0 1 .253-.382l.025-.035A.5.5 0 0 1 4.4.8m3 0-.003.004-.014.019a4 4 0 0 0-.204.31 2 2 0 0 0-.141.267c-.026.06-.034.092-.037.103v.004a.6.6 0 0 0 .091.248c.075.133.178.272.308.445l.01.012c.118.158.26.347.37.543.112.2.22.455.22.745 0 .188-.065.368-.119.494a3 3 0 0 1-.202.388 5 5 0 0 1-.253.382l-.018.025-.005.008-.002.002A.5.5 0 0 1 6.6 4.2l.003-.004.014-.019a4 4 0 0 0 .204-.31 2 2 0 0 0 .141-.267c.026-.06.034-.092.037-.103a.6.6 0 0 0-.09-.252A4 4 0 0 0 6.6 2.8l-.01-.012a5 5 0 0 1-.37-.543A1.53 1.53 0 0 1 6 1.5c0-.188.065-.368.119-.494.059-.138.134-.274.202-.388a6 6 0 0 1 .253-.382l.025-.035A.5.5 0 0 1 7.4.8m3 0-.003.004-.014.019a4 4 0 0 0-.204.31 2 2 0 0 0-.141.267c-.026.06-.034.092-.037.103v.004a.6.6 0 0 0 .091.248c.075.133.178.272.308.445l.01.012c.118.158.26.347.37.543.112.2.22.455.22.745 0 .188-.065.368-.119.494a3 3 0 0 1-.202.388 5 5 0 0 1-.252.382l-.019.025-.005.008-.002.002A.5.5 0 0 1 9.6 4.2l.003-.004.014-.019a4 4 0 0 0 .204-.31 2 2 0 0 0 .141-.267c.026-.06.034-.092.037-.103a.6.6 0 0 0-.09-.252A4 4 0 0 0 9.6 2.8l-.01-.012a5 5 0 0 1-.37-.543A1.53 1.53 0 0 1 9 1.5c0-.188.065-.368.119-.494.059-.138.134-.274.202-.388a6 6 0 0 1 .253-.382l.025-.035A.5.5 0 0 1 10.4.8"/>
 
-</svg>
-          ) : (
+          {/* Show Recipes */}
+          {searchType === "recipes" && recipes.length > 0 && (
             <div className="recipe-results">
               {recipes.slice(0, 6).map((recipe) => (
                 <div key={recipe.id} className="recipe-card">
@@ -98,6 +144,25 @@ const Board = () => {
                     rel="noopener noreferrer"
                   >
                     View Recipe
+                  </a>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Show YouTube Videos */}
+          {searchType === "youtube" && videos.length > 0 && (
+            <div className="video-results">
+              {videos.map((video) => (
+                <div key={video.id} className="video-card">
+                  <img src={video.thumbnail} alt={video.title} />
+                  <h3>{video.title}</h3>
+                  <a
+                    href={`https://www.youtube.com/watch?v=${video.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Watch Video
                   </a>
                 </div>
               ))}
