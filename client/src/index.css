@@ -249,8 +249,57 @@ tbody tr:nth-child(odd) {
 .login-notice h1 {
     margin: 1rem;
 }
+
+.video-results {
+    display: grid;
+    grid-template-columns: 250px 250px 250px;
+    gap: 1.5rem; /* Space between cards */
+    padding: 1rem; /* Padding around the grid */
+    justify-content: center;
+    align-content: center;
+    margin: 0 auto;
+}
+
+.video-card {
+    background: #fff; /* Background color for cards */
+    border: 1px solid #ddd; /* Subtle border */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
+    overflow: hidden; /* Ensure content doesn't overflow the card */
+    text-align: center;
+}
+
+.video-card img {
+    width: 100%; /* Full width image */
+    height: auto;
+    border-bottom: 1px solid #ddd; /* Divider between image and content */
+}
+
+.video-card h3 {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.video-card a {
+    display: inline-block;
+    margin: 0.5rem 0;
+    color: #007bff; /* Link color */
+    text-decoration: none;
+}
+
+.video-card a:hover {
+    text-decoration: underline;
+}
+
 @media (max-width: 1200px) {
     .recipe-results {
+        grid-template-columns: repeat(
+            auto-fill,
+            minmax(200px, 1fr)
+        ); /* Adjust column width on medium screens */
+    }
+    .video-results {
         grid-template-columns: repeat(
             auto-fill,
             minmax(200px, 1fr)
@@ -265,10 +314,19 @@ tbody tr:nth-child(odd) {
             minmax(150px, 1fr)
         ); /* Adjust column width on small screens */
     }
+    .video-results {
+        grid-template-columns: repeat(
+            auto-fill,
+            minmax(150px, 1fr)
+        ); /* Adjust column width on small screens */
+    }
 }
 
 @media (max-width: 480px) {
     .recipe-results {
+        grid-template-columns: 1fr; /* Stack the cards vertically on extra small screens */
+    }
+    .video-results {
         grid-template-columns: 1fr; /* Stack the cards vertically on extra small screens */
     }
     .form {

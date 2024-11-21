@@ -1,35 +1,10 @@
 import { useState, useLayoutEffect } from "react";
 import ErrorPage from "./ErrorPage";
 import auth from "../utils/auth";
+import { Recipe } from "../interfaces/Recipe";
+import { Video } from "../interfaces/Video";
+import { YouTubeAPIItem } from "../interfaces/YouTubeAPIItem";
 import axios from "axios";
-import VideoList from "../components/VideoList";
-import VideoPlayer from "../components/VideoPlayer";
-
-interface Recipe {
-  id: number;
-  title: string;
-  image: string;
-}
-
-interface Video {
-  id: string; // YouTube video ID
-  title: string; // Video title
-  thumbnail: string; // URL of the thumbnail image
-}
-
-interface YouTubeAPIItem {
-  id: {
-    videoId: string;
-  };
-  snippet: {
-    title: string;
-    thumbnails: {
-      high: {
-        url: string;
-      };
-    };
-  };
-}
 
 const Board = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -37,7 +12,6 @@ const Board = () => {
   const [loginCheck, setLoginCheck] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [videos, setVideos] = useState<Video[]>([]);
-  const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
   const [searchType, setSearchType] = useState<"youtube" | "recipes">(
     "recipes",
   );
@@ -77,7 +51,7 @@ const Board = () => {
             q: query,
             type: "video",
             key: API_KEY,
-            maxResults: 10,
+            maxResults: 6,
           },
         },
       );
@@ -96,16 +70,11 @@ const Board = () => {
     }
   };
 
-  const handleSelectVideo = (videoId: string) => {
-    setSelectedVideoId(videoId);
-  };
-
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       if (searchType === "recipes") {
         setVideos([]); // Clear videos when switching to recipe search
-        setSelectedVideoId(null); // Clear selected video
         fetchRecipes(searchQuery);
       } else if (searchType === "youtube") {
         setRecipes([]); // Clear recipes when switching to video search
@@ -119,7 +88,6 @@ const Board = () => {
     setSearchQuery(""); // Clear the search query when switching search types
     if (newSearchType === "recipes") {
       setVideos([]); // Clear YouTube videos when switching to recipes
-      setSelectedVideoId(null); // Clear selected video
     } else {
       setRecipes([]); // Clear recipes when switching to YouTube
     }
@@ -195,10 +163,22 @@ const Board = () => {
           )}
 
           {/* Show YouTube Videos */}
-          {searchType === "youtube" && selectedVideoId ? (
-            <VideoPlayer videoId={selectedVideoId} />
-          ) : (
-            <VideoList videos={videos} onSelect={handleSelectVideo} />
+          {searchType === "youtube" && videos.length > 0 && (
+            <div className="video-results">
+              {videos.map((video) => (
+                <div key={video.id} className="video-card">
+                  <img src={video.thumbnail} alt={video.title} />
+                  <h3>{video.title}</h3>
+                  <a
+                    href={`https://www.youtube.com/watch?v=${video.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Watch Video
+                  </a>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       )}
