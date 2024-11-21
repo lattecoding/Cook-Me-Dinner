@@ -75,12 +75,47 @@ tbody tr:nth-child(odd) {
     background-color: #333;
 }
 
-.search-container {
-    width: 100%;
+
+   .search-container {
+    background-image:url("knife.jpg");
+    background-repeat: repeat-x;
+    background-size:cover;
+    width: 90%;
     margin: 40px;
     display: flex;
+   justify-content: center;
+    padding:20%;
+ 
+ 
+    
+    
+}
+
+.search-form {
+   
+
+    align-self: center;
+    width: 300px;
+    margin-left:15%;
+    
+}
+
+
+
+.search-buttons {
+
+    margin-left: 18%;
+    margin-right:15%;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
+    padding-top: 10%;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 70px; /* Optional: adds space between buttons */
+    width: 50%;
+    
+
+  
 }
 
 .image-landing {
@@ -161,6 +196,11 @@ tbody tr:nth-child(odd) {
     color: #535bf2;
 }
 
+
+
+ 
+
+
 .login-notice {
     display: flex;
     flex-direction: column;
@@ -220,7 +260,7 @@ tbody tr:nth-child(odd) {
         color: #747bff;
     }
     button {
-        background-color: #f9f9f9;
+        background-color: #ffffff;
     }
 }
 

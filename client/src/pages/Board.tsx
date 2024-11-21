@@ -108,7 +108,7 @@ const Board = () => {
         <div className="container-xl">
           <div className="search-container">
             <form>
-              <input
+              <input className="search-form"
                 type="text"
                 placeholder="Search for a recipe or video..."
                 value={searchQuery}
