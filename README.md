@@ -38,7 +38,7 @@ cd server
 cd db
 psql -U postgres
 ```
-Log in in postgres server
+Log in to postgres server
 
 ```
 \i schema.sql
@@ -55,6 +55,7 @@ npm run start:dev
 [GitHub](https://github.com/lattecoding/Cookify)
 
 ## Email Author
-[Email Author](mailto:jgonnella@test.mail)
+[Email Author](mailto:Group3@test.mail)
 
 ## Video Demo
+[Video Demo] (https://drive.google.com/file/d/1r4I8T8YL3yJZqgdW4TaOiHtghVGCbMuI/view)
