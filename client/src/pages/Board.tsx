@@ -41,17 +41,17 @@ const Board = () => {
   };
 
   const handleSearchVideos = async (query: string) => {
-    const API_KEY = "AIzaSyCspIUuocKpc10150WmsBMm9bLihaxVNYI"; // Replace with your actual API key
+    const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY; // Ensure you're getting the API key from your environment file
     try {
       const response = await axios.get(
-        `https://www.googleapis.com/youtube/v3/search`,
+        "https://www.googleapis.com/youtube/v3/search",
         {
           params: {
             part: "snippet",
-            q: query,
-            type: "video",
-            key: API_KEY,
-            maxResults: 6,
+            q: query, // The search query you're sending
+            type: "video", // Make sure you're searching for videos
+            key: API_KEY, // API Key
+            maxResults: 6, // Limit the number of results
           },
         },
       );
@@ -67,6 +67,10 @@ const Board = () => {
       setVideos(videoData);
     } catch (error) {
       console.error("Error fetching videos:", error);
+      // Log more error details to troubleshoot
+      if (error.response) {
+        console.error("API Response Error:", error.response.data);
+      }
     }
   };
 
