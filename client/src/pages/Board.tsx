@@ -12,8 +12,8 @@ const Board = () => {
   const [loginCheck, setLoginCheck] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [videos, setVideos] = useState<Video[]>([]);
-  const [searchType, setSearchType] = useState<"youtube" | "recipes">(
-    "recipes",
+  const [searchType, setSearchType] = useState<"youtube" | "recipes" | null>(
+    null,
   );
 
   const checkLogin = () => {
@@ -70,26 +70,17 @@ const Board = () => {
     }
   };
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: React.FormEvent, type: "youtube" | "recipes") => {
     e.preventDefault();
+    setSearchType(type); // Set the search type based on which button was clicked
     if (searchQuery.trim()) {
-      if (searchType === "recipes") {
+      if (type === "recipes") {
         setVideos([]); // Clear videos when switching to recipe search
         fetchRecipes(searchQuery);
-      } else if (searchType === "youtube") {
+      } else if (type === "youtube") {
         setRecipes([]); // Clear recipes when switching to video search
         handleSearchVideos(searchQuery);
       }
-    }
-  };
-
-  const handleSearchTypeChange = (newSearchType: "youtube" | "recipes") => {
-    setSearchType(newSearchType);
-    setSearchQuery(""); // Clear the search query when switching search types
-    if (newSearchType === "recipes") {
-      setVideos([]); // Clear YouTube videos when switching to recipes
-    } else {
-      setRecipes([]); // Clear recipes when switching to YouTube
     }
   };
 
@@ -116,29 +107,26 @@ const Board = () => {
       ) : (
         <div className="container-xl">
           <div className="search-container">
-            <form onSubmit={handleSearch}>
+            <form>
               <input
                 type="text"
-                placeholder={`Search for a ${searchType === "youtube" ? "video" : "recipe"}...`}
+                placeholder="Search for a recipe or video..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               <div className="search-buttons">
                 <button
                   type="button"
-                  onClick={() => handleSearchTypeChange("recipes")}
-                  className={searchType === "recipes" ? "active" : ""}
+                  onClick={(e) => handleSearch(e, "recipes")}
                 >
                   Search Recipes
                 </button>
                 <button
                   type="button"
-                  onClick={() => handleSearchTypeChange("youtube")}
-                  className={searchType === "youtube" ? "active" : ""}
+                  onClick={(e) => handleSearch(e, "youtube")}
                 >
                   Search Videos
                 </button>
-                <button type="submit">Search</button>
               </div>
             </form>
           </div>
