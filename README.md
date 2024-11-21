@@ -8,7 +8,6 @@
 - [Contributions](#contributions)
 - [Testing](#testing)
 - [GitHub](#github)
-- [Email Author](#email-author)
 - [Video Demo](#video-demo)
 
 ## License
