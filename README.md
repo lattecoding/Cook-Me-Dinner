@@ -8,6 +8,7 @@
 - [Contributions](#contributions)
 - [Testing](#testing)
 - [GitHub](#github)
+- [Email Author](#email-author)
 - [Video Demo](#video-demo)
 
 ## License
@@ -52,5 +53,8 @@ npm run start:dev
 
 ## GitHub
 [GitHub](https://github.com/lattecoding/Cookify)
+
+## Email Author
+[Email Author](mailto:jgonnella@test.mail)
 
 ## Video Demo
